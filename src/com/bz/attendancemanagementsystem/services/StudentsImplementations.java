@@ -2,8 +2,10 @@ package com.bz.attendancemanagementsystem.services;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import com.bz.attendancemanagementsystem.interfaces.IStudent;
+import com.bz.attendancemanagementsystem.model.AdminModel;
 import com.bz.attendancemanagementsystem.model.StudentModel;
 
 public class StudentsImplementations implements IStudent{
@@ -13,48 +15,80 @@ public class StudentsImplementations implements IStudent{
 	@Override
 	public int create(StudentModel student) {
 		studentHouse.add(student);
-		return 0;
+		student.setRollNo(studentHouse.indexOf(student));
+		return studentHouse.indexOf(student);
 	}
 
+	
+	private void printDisplay(StudentModel student) {
+		if(null != student) {			
+			System.out.println("Form ::"+'\t'+"FirstName"+" :: "+"  LastName"+" :: "+"    MobileNumber"+" :: "+"      Standard");
+			System.out.println(student.getRollNo()+"    "+'\t'+student.getFirstName()+'\t'+'\t'+student.getLastName()+'\t'+'\t'+student.getMobileNumber()+'\t'+'\t'+student.getStandard());		
+		}
+	}
+	
+	private void updateOptionsToSupport(StudentModel student) {
+		byte option =0;
+		do {
+		System.out.println("Press 1: Update FirstName"+'\n'+"Press 2: Update LastName"+'\n'+"Press 3: MobileNUmber"+'\n'+"Press 4: Standard");
+		option = getInputInImplementations.nextByte();
+		switch(option) {
+		case 1:
+			System.out.println("Enter FirstName : "); 
+			student.setFirstName(getInputInImplementations.next());
+			break;
+		case 2:
+			System.out.println("Enter LastName : "); 
+			student.setLastName(getInputInImplementations.next());
+			break;	
+		case 3:
+			System.out.println("Enter MobileNumber : "); 
+			student.setMobileNumber(getInputInImplementations.next());
+			break;
+		case 4:
+			System.out.println("Enter Standard : "); 
+			student.setStandard(getInputInImplementations.next());
+			break;
+		}
+		printDisplay(student);
+		System.out.println("Press 0: To Visit Update Menu "+'\n'+"Press 1: To Visit Main Menu ");
+		option=getInputInImplementations.nextByte();
+		}while(option == 0);
+	
+}
+	
 	@Override
 	public void update(String firstName) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void delete(String firstName) {
-		// TODO Auto-generated method stub
-		
+		studentHouse.removeAll(studentHouse.stream().filter(std->std.getFirstName().contains(firstName)).collect(Collectors.toList()));		
 	}
 
 	@Override
 	public void searchById(int studentNo) {
-		// TODO Auto-generated method stub
-		
+		studentHouse.stream().filter(std->std.getRollNo() == studentNo).forEach(std->printDisplay(std));
 	}
 
 	@Override
 	public void searchByFirstName(String firstName) {
-		// TODO Auto-generated method stub
-		
+		studentHouse.stream().filter(std->std.getFirstName().contains(firstName)).forEach(std->printDisplay(std));
 	}
 
 	@Override
 	public void searchByLastName(String lastName) {
-		// TODO Auto-generated method stub
-		
+		studentHouse.stream().filter(std->std.getLastName().contains(lastName)).forEach(std->printDisplay(std));
 	}
 
 	@Override
 	public void searchByStandard(String standard) {
-		// TODO Auto-generated method stub
-		
+		studentHouse.stream().filter(std->std.getStandard().contains(standard)).forEach(std->printDisplay(std));
 	}
 
 	@Override
 	public void displayWelcome() {
-		// TODO Auto-generated method stub
 		
 	}
 
