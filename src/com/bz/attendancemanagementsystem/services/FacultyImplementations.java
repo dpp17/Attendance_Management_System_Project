@@ -1,6 +1,7 @@
 package com.bz.attendancemanagementsystem.services;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -11,7 +12,6 @@ import com.bz.attendancemanagementsystem.exception.InvalidSubjectException;
 import com.bz.attendancemanagementsystem.exception.LastNameStartWithCapitalException;
 import com.bz.attendancemanagementsystem.interfaces.IFaculty;
 import com.bz.attendancemanagementsystem.interfaces.IFacultyRegex;
-import com.bz.attendancemanagementsystem.model.AdminModel;
 import com.bz.attendancemanagementsystem.model.FacultyModel;
 import com.bz.attendancemanagementsystem.utility.FacultyRegex;
 
@@ -104,23 +104,28 @@ public class FacultyImplementations implements IFaculty {
 	}
 
 	@Override
-	public void searchById(int facultyNo) {
+	public void searchById(int facultyNo) throws NoSuchElementException  {
 		facultyHouse.stream().filter(fac->fac.getFacultyNo() == facultyNo).forEach(fac->printFacultyDetails(fac));
+		facultyHouse.stream().filter(fac->fac.getFacultyNo() == facultyNo).findFirst().orElseThrow();
 	}
 
 	@Override
-	public void searchByFirstName(String firstName) {
-		facultyHouse.stream().filter(fac->fac.getFirstName().contains(firstName)).forEach(fac->printFacultyDetails(fac));	
+	public void searchByFirstName(String firstName) throws NoSuchElementException  {
+		facultyHouse.stream().filter(fac->fac.getFirstName().equalsIgnoreCase(firstName)).forEach(fac->printFacultyDetails(fac));
+		facultyHouse.stream().filter(fac->fac.getFirstName().equalsIgnoreCase(firstName)).findFirst().orElseThrow();
 	}
 
 	@Override
-	public void searchByLastName(String lastName) {
-		facultyHouse.stream().filter(fac->fac.getLastName().contains(lastName)).forEach(fac->printFacultyDetails(fac));	
+	public void searchByLastName(String lastName) throws NoSuchElementException  {
+		facultyHouse.stream().filter(fac->fac.getLastName().equalsIgnoreCase(lastName)).forEach(fac->printFacultyDetails(fac));
+		facultyHouse.stream().filter(fac->fac.getLastName().equalsIgnoreCase(lastName)).findFirst().orElseThrow();
+		
 	}
 
 	@Override
-	public void searchBySubject(String subject) {
-		facultyHouse.stream().filter(fac->fac.getSubject().contains(subject)).forEach(fac->printFacultyDetails(fac));
+	public void searchBySubject(String subject) throws NoSuchElementException  {
+		facultyHouse.stream().filter(fac->fac.getSubject().equalsIgnoreCase(subject)).forEach(fac->printFacultyDetails(fac));
+		facultyHouse.stream().filter(fac->fac.getSubject().equalsIgnoreCase(subject)).findFirst().orElseThrow();
 	}
 
 	@Override

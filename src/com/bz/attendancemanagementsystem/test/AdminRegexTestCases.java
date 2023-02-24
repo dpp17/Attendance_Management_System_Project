@@ -5,6 +5,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.bz.attendancemanagementsystem.exception.FirstNameStartWithCapitalException;
+import com.bz.attendancemanagementsystem.exception.InvalidAdminType;
+import com.bz.attendancemanagementsystem.exception.InvalidUserNameException;
+import com.bz.attendancemanagementsystem.exception.LastNameStartWithCapitalException;
+import com.bz.attendancemanagementsystem.exception.PasswordException;
 import com.bz.attendancemanagementsystem.utility.AdminRegex;
 
 public class AdminRegexTestCases {
@@ -16,17 +21,17 @@ public class AdminRegexTestCases {
 		assertTrue(adminRegex.isFirstNameStartWithCapital("Rashmika"));
 	}
 	
-	@Test
+	@Test(expected = FirstNameStartWithCapitalException.class)
 	public void isFirstNameStartWithCapitalTestCaseTwo() {
 		assertFalse(adminRegex.isFirstNameStartWithCapital("rashmika"));
 	}
 	
-	@Test
+	@Test(expected = FirstNameStartWithCapitalException.class)
 	public void isFirstNameStartWithCapitalTestCaseThree() {
 		assertFalse(adminRegex.isFirstNameStartWithCapital("rASHMIKA"));
 	}
 	
-	@Test
+	@Test(expected = FirstNameStartWithCapitalException.class)
 	public void isFirstNameStartWithCapitalTestCasefour() {
 		assertFalse(adminRegex.isFirstNameStartWithCapital("RashMikA"));
 	}
@@ -34,22 +39,22 @@ public class AdminRegexTestCases {
 	//***************** FOR LASTNAME *****************//
 	@Test
 	public void isLastNameStartWithCapitalTestCaseOne() {
-		assertTrue(adminRegex.isFirstNameStartWithCapital("Mandana"));
+		assertTrue(adminRegex.isLastNameStartWithCapital("Mandana"));
 	}
 
-	@Test
+	@Test(expected = LastNameStartWithCapitalException.class)
 	public void isLastNameStartWithCapitalTestCaseTwo() {
-		assertFalse(adminRegex.isFirstNameStartWithCapital("mandana"));
+		assertFalse(adminRegex.isLastNameStartWithCapital("mandana"));
 	}
 	
-	@Test
+	@Test(expected = LastNameStartWithCapitalException.class)
 	public void isLastNameStartWithCapitalTestCaseThree() {
-		assertFalse(adminRegex.isFirstNameStartWithCapital("mANDANA"));
+		assertFalse(adminRegex.isLastNameStartWithCapital("mANDANA"));
 	}
 	
-	@Test
+	@Test(expected = LastNameStartWithCapitalException.class)
 	public void isLastNameStartWithCapitalTestCaseFour() {
-		assertFalse(adminRegex.isFirstNameStartWithCapital("ManDanA"));
+		assertFalse(adminRegex.isLastNameStartWithCapital("ManDanA"));
 	}
 	
 	//***************** FOR TYPE OF ADMIN *****************//
@@ -63,17 +68,17 @@ public class AdminRegexTestCases {
 		assertTrue(adminRegex.isAdminTypeValid("HOD"));
 	}
 	
-	@Test
+	@Test(expected = InvalidAdminType.class)
 	public void isAdminTypeValidTestCaseThree() {
 		assertFalse(adminRegex.isAdminTypeValid("H"));
 	}
 	
-	@Test
+	@Test(expected = InvalidAdminType.class)
 	public void isAdminTypeValidTestCaseFour() {
 		assertFalse(adminRegex.isAdminTypeValid(""));
 	}
 	
-	//***************** FOR TYPE OF ADMIN *****************//
+	//***************** FOR UserName *****************//
 	@Test
 	public void isUserNameValidTestCaseOne() {
 		assertTrue(adminRegex.isUserNameValid("durga17u"));
@@ -89,12 +94,12 @@ public class AdminRegexTestCases {
 		assertTrue(adminRegex.isUserNameValid("DURGA17U"));
 	}
 	
-	@Test
+	@Test(expected = InvalidUserNameException.class)
 	public void isUserNameValidTestCaseFour() {
 		assertFalse(adminRegex.isUserNameValid("durg"));
 	}
 	
-	@Test
+	@Test(expected = InvalidUserNameException.class)
 	public void isUserNameValidTestCaseFive() {
 		assertFalse(adminRegex.isUserNameValid(""));
 	}
@@ -113,23 +118,23 @@ public class AdminRegexTestCases {
 		public void isPasswordValidTestCaseThree() {
 			assertTrue(adminRegex.isPasswordValid("admin12@12oogle"));
 		}
-		@Test
+		@Test(expected = PasswordException.class)
 		public void isPasswordValidTestCaseFour() {
 			assertFalse(adminRegex.isPasswordValid("admin@12oogle"));
 		}
-		@Test
+		@Test(expected = PasswordException.class)
 		public void isPasswordValidTestCaseFive() {
 			assertFalse(adminRegex.isPasswordValid("admin12@"));
 		}
-		@Test
+		@Test(expected = PasswordException.class)
 		public void isPasswordValidTestCaseSix() {
 			assertFalse(adminRegex.isPasswordValid("admin12Google"));
 		}
-		@Test
+		@Test(expected = PasswordException.class)
 		public void isPasswordValidTestCaseSeven() {
 			assertFalse(adminRegex.isPasswordValid("12@12oogle"));
 		}
-		@Test
+		@Test(expected = PasswordException.class)
 		public void isPasswordValidTestCaseEight() {
 			assertFalse(adminRegex.isPasswordValid("12@12oogle"));
 		}

@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.bz.attendancemanagementsystem.exception.FirstNameStartWithCapitalException;
+import com.bz.attendancemanagementsystem.exception.LastNameStartWithCapitalException;
 import com.bz.attendancemanagementsystem.utility.FacultyRegex;
 
 public class FacultyRegexTestCases {
@@ -16,17 +18,17 @@ public class FacultyRegexTestCases {
 		assertTrue(facultyRegex.isFirstNameStartWithCapital("Rashmika"));
 	}
 	
-	@Test
+	@Test(expected = FirstNameStartWithCapitalException.class)
 	public void isFirstNameStartWithCapitalTestCaseTwo() {
 		assertFalse(facultyRegex.isFirstNameStartWithCapital("rashmika"));
 	}
 	
-	@Test
+	@Test(expected = FirstNameStartWithCapitalException.class)
 	public void isFirstNameStartWithCapitalTestCaseThree() {
 		assertFalse(facultyRegex.isFirstNameStartWithCapital("rASHMIKA"));
 	}
 	
-	@Test
+	@Test(expected = FirstNameStartWithCapitalException.class)
 	public void isFirstNameStartWithCapitalTestCasefour() {
 		assertFalse(facultyRegex.isFirstNameStartWithCapital("RashMikA"));
 	}
@@ -34,21 +36,21 @@ public class FacultyRegexTestCases {
 	//***************** FOR LASTNAME *****************//
 	@Test
 	public void isLastNameStartWithCapitalTestCaseOne() {
-		assertTrue(facultyRegex.isFirstNameStartWithCapital("Mandana"));
+		assertTrue(facultyRegex.isLastNameStartWithCapital("Mandana"));
 	}
 
-	@Test
+	@Test(expected = LastNameStartWithCapitalException.class)
 	public void isLastNameStartWithCapitalTestCaseTwo() {
-		assertFalse(facultyRegex.isFirstNameStartWithCapital("mandana"));
+		assertFalse(facultyRegex.isLastNameStartWithCapital("mandana"));
 	}
 	
-	@Test
+	@Test(expected = LastNameStartWithCapitalException.class)
 	public void isLastNameStartWithCapitalTestCaseThree() {
-		assertFalse(facultyRegex.isFirstNameStartWithCapital("mANDANA"));
+		assertFalse(facultyRegex.isLastNameStartWithCapital("mANDANA"));
 	}
 	
-	@Test
+	@Test(expected = LastNameStartWithCapitalException.class)
 	public void isLastNameStartWithCapitalTestCaseFour() {
-		assertFalse(facultyRegex.isFirstNameStartWithCapital("ManDanA"));
+		assertFalse(facultyRegex.isLastNameStartWithCapital("ManDanA"));
 	}
 }

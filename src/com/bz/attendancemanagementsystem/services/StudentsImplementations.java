@@ -1,22 +1,91 @@
 package com.bz.attendancemanagementsystem.services;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-
+import com.bz.attendancemanagementsystem.exception.FirstNameStartWithCapitalException;
+import com.bz.attendancemanagementsystem.exception.InvalidMobileNumberException;
+import com.bz.attendancemanagementsystem.exception.InvalidStandardException;
+import com.bz.attendancemanagementsystem.exception.LastNameStartWithCapitalException;
 import com.bz.attendancemanagementsystem.interfaces.IStudent;
-import com.bz.attendancemanagementsystem.model.AdminModel;
+import com.bz.attendancemanagementsystem.interfaces.IStudentRegex;
 import com.bz.attendancemanagementsystem.model.StudentModel;
+import com.bz.attendancemanagementsystem.utility.StudentRegex;
 
 public class StudentsImplementations implements IStudent{
 
 	ArrayList<StudentModel> studentHouse = new ArrayList<StudentModel>();
 	Scanner getInputInImplementations = new Scanner(System.in);
+	IStudentRegex iStudentRegex = new StudentRegex();
+	
 	@Override
-	public int create(StudentModel student) {
-		studentHouse.add(student);
-		student.setRollNo(studentHouse.indexOf(student));
-		return studentHouse.indexOf(student);
+	public int create(StudentModel student) throws FirstNameStartWithCapitalException,LastNameStartWithCapitalException,InvalidMobileNumberException,InvalidStandardException{
+		
+		if(iStudentRegex.isFirstNameStartsWithCapital(student.getFirstName())) {
+			if(iStudentRegex.isLastNameStartsWithCapital(student.getLastName())) {
+				if(iStudentRegex.isMobileNumberValid(student.getMobileNumber())) {
+					if(iStudentRegex.isStandardValid(student.getStandard())) {
+						studentHouse.add(student);
+						student.setRollNo(studentHouse.indexOf(student));
+						return studentHouse.indexOf(student);
+					}
+				}
+			}
+		}
+			
+		return -1;
+	}
+
+	
+	@Override
+	public void update(String firstName) {
+	studentHouse.stream().filter(std->std.getFirstName().equalsIgnoreCase(firstName)).forEach(std->updateOptionsToSupport(std));	
+	}
+
+	@Override
+	public void delete(String firstName) {
+		studentHouse.removeAll(studentHouse.stream().filter(std->std.getFirstName().equalsIgnoreCase(firstName)).collect(Collectors.toList()));		
+	}
+
+	@Override
+	public void searchById(int studentNo) throws NoSuchElementException {
+		studentHouse.stream().filter(std->std.getRollNo() == studentNo).forEach(std->printDisplay(std));
+		studentHouse.stream().filter(std->std.getRollNo() == studentNo).findFirst().orElseThrow();
+	}
+
+	@Override
+	public void searchByFirstName(String firstName) throws NoSuchElementException  {
+		studentHouse.stream().filter(std->std.getFirstName().equalsIgnoreCase(firstName)).forEach(std->printDisplay(std));
+		studentHouse.stream().filter(std->std.getFirstName().equalsIgnoreCase(firstName)).findFirst().orElseThrow();
+	}
+
+	@Override
+	public void searchByLastName(String lastName) throws NoSuchElementException  {
+		studentHouse.stream().filter(std->std.getLastName().equalsIgnoreCase(lastName)).forEach(std->printDisplay(std));
+		studentHouse.stream().filter(std->std.getLastName().equalsIgnoreCase(lastName)).findFirst().orElseThrow();
+	}
+
+	@Override
+	public void searchByStandard(String standard) throws NoSuchElementException  {
+		studentHouse.stream().filter(std->std.getStandard().equalsIgnoreCase(standard)).forEach(std->printDisplay(std));
+		studentHouse.stream().filter(std->std.getStandard().equalsIgnoreCase(standard)).findFirst().orElseThrow();
+		
+	}
+
+	@Override
+	public void displayWelcome() {
+		System.err.println("====================================================");
+		System.out.println("  ::  Welcome To ATTENDANCE_MANAGEMENT_SYSTEMS  ::  ");
+		System.err.println("===================================================="+'\n');
+	}
+
+	@Override
+	public void displayEnd() {
+		System.err.println("====================================================");
+		System.out.println("     ::     THANK YOU for STOPPING BY !!     ::     ");
+		System.err.println("===================================================="+'\n');
+		
 	}
 
 	
@@ -56,46 +125,4 @@ public class StudentsImplementations implements IStudent{
 		}while(option == 0);
 	
 }
-	
-	@Override
-	public void update(String firstName) {
-		
-	}
-
-	@Override
-	public void delete(String firstName) {
-		studentHouse.removeAll(studentHouse.stream().filter(std->std.getFirstName().contains(firstName)).collect(Collectors.toList()));		
-	}
-
-	@Override
-	public void searchById(int studentNo) {
-		studentHouse.stream().filter(std->std.getRollNo() == studentNo).forEach(std->printDisplay(std));
-	}
-
-	@Override
-	public void searchByFirstName(String firstName) {
-		studentHouse.stream().filter(std->std.getFirstName().contains(firstName)).forEach(std->printDisplay(std));
-	}
-
-	@Override
-	public void searchByLastName(String lastName) {
-		studentHouse.stream().filter(std->std.getLastName().contains(lastName)).forEach(std->printDisplay(std));
-	}
-
-	@Override
-	public void searchByStandard(String standard) {
-		studentHouse.stream().filter(std->std.getStandard().contains(standard)).forEach(std->printDisplay(std));
-	}
-
-	@Override
-	public void displayWelcome() {
-		
-	}
-
-	@Override
-	public void displayEnd() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

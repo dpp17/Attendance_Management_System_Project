@@ -5,6 +5,9 @@ import java.util.regex.Pattern;
 
 import com.bz.attendancemanagementsystem.exception.FirstNameStartWithCapitalException;
 import com.bz.attendancemanagementsystem.exception.InvalidAdminType;
+import com.bz.attendancemanagementsystem.exception.InvalidMobileNumberException;
+import com.bz.attendancemanagementsystem.exception.InvalidStandardException;
+import com.bz.attendancemanagementsystem.exception.InvalidSubjectException;
 import com.bz.attendancemanagementsystem.exception.InvalidUserNameException;
 import com.bz.attendancemanagementsystem.exception.LastNameStartWithCapitalException;
 import com.bz.attendancemanagementsystem.exception.PasswordException;
@@ -34,7 +37,7 @@ public class FacultyRegex implements IFacultyRegex{
 	public boolean isMobileNumberValid(String mobileNumber) {
 		boolean result = checkValidation(mobileNumber,EFaculty.VALID_MOBILE_NUMBER.getConstant()).find();
 		if(!result) {
-			throw new InvalidAdminType(" ***** ::  Invalid Admin Type :: ***** ");
+			throw new InvalidMobileNumberException(" ***** ::  Invalid Mobile Number :: ***** ");
 		}
 		return result;
 	}
@@ -43,7 +46,7 @@ public class FacultyRegex implements IFacultyRegex{
 	public boolean isStandardValid(String subject) {
 		boolean result = checkValidation(subject,EFaculty.VALID_STANDARD.getConstant()).find();
 		if(!result) {
-			throw new InvalidUserNameException(" ***** ::  Invalid LastName :: ***** ");
+			throw new InvalidStandardException(" ***** ::  Invalid Standard :: ***** ");
 		}
 	return result;
 	}
@@ -52,7 +55,7 @@ public class FacultyRegex implements IFacultyRegex{
 	public boolean isSubjectValid(String subject) {
 		boolean result = checkValidation(subject,EFaculty.VALID_SUBJECT.getConstant()).find();
 		if(!result) {
-			throw new PasswordException(" ***** ::  Invalid Password :: ***** ");
+			throw new InvalidSubjectException(" ***** ::  Invalid Subject :: ***** ");
 		}
 		return result;
 	}

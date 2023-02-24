@@ -2,6 +2,7 @@ package com.bz.attendancemanagementsystem.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import com.bz.attendancemanagementsystem.exception.AdminNotFoundException;
@@ -95,28 +96,38 @@ public class AdminImplementations implements IAdmin {
 	}
 	
 	public void update(String firstName) {
-		adminHouse.stream().filter(adm->adm.getFirstName().contains(firstName)).forEach(adm->updateOptionsToSupport(adm));		
+		adminHouse.stream().filter(adm->adm.getFirstName().equalsIgnoreCase(firstName)).forEach(adm->updateOptionsToSupport(adm));		
 	}
 
 	public void delete(String firstName) {	
-		adminHouse.removeAll(adminHouse.stream().filter(adm->adm.getFirstName().contains(firstName)).collect(Collectors.toList()));
-	}
-
-	public void searchById(int adminId) {
+		adminHouse.removeAll(adminHouse.stream().filter(adm->adm.getFirstName().equalsIgnoreCase(firstName)).collect(Collectors.toList()));
 		
-		adminHouse.stream().filter(adm->adm.getAdminId() == adminId).forEach(adm->printDisplay(adm));	
+		
+//		adminHouse.stream().forEach(adm->{if( adminHouse.get(adminHouse.indexOf(adm)) == null) {
+//			adminHouse.set(adminHouse.indexOf(adm), adminHouse.get((adminHouse.indexOf(adm)+1)));
+//			adm.setAdminId(adminHouse.indexOf(adm));
+//			System.out.println("--- :: New Admin Id :: ---"+adm.getAdminId());
+//			
+//		}else{System.out.println("-----------------All cool");}});
+	
+	
 	}
 
-	public void searchByFirstName(String firstName) {
-		adminHouse.stream().filter(adm->adm.getFirstName().contains(firstName)).forEach(adm->printDisplay(adm));	
+	public void searchById(int adminId) throws NoSuchElementException {
+		
+		adminHouse.stream().filter(adm->adm.getAdminId() == adminId).forEach(adm->printDisplay(adm));
+		adminHouse.stream().filter(adm->adm.getAdminId() == adminId).findFirst().orElseThrow();
 	}
 
-	public void searchByLastName(String lastName) throws AdminNotFoundException{
-		if(adminHouse.stream().filter(adm->adm.getLastName().contains(lastName)) != null) {
-			adminHouse.stream().filter(adm->adm.getLastName().contains(lastName)).forEach(adm->printDisplay(adm));
-		}else {
-			throw new AdminNotFoundException("Admin not Found");
-		}
+	public void searchByFirstName(String firstName) throws NoSuchElementException {
+		adminHouse.stream().filter(adm->adm.getFirstName().equalsIgnoreCase(firstName)).forEach(adm->printDisplay(adm));
+		adminHouse.stream().filter(adm->adm.getFirstName().equalsIgnoreCase(firstName)).findFirst().orElseThrow();
+	}
+
+	public void searchByLastName(String lastName) throws NoSuchElementException{
+		
+		adminHouse.stream().filter(adm->adm.getLastName().equalsIgnoreCase(lastName)).forEach(adm->printDisplay(adm));;
+			adminHouse.stream().filter(adm->adm.getLastName().equalsIgnoreCase(lastName)).findFirst().orElseThrow();
 	}
 
 	@Override
